@@ -1,6 +1,6 @@
-# Sigma-clipping [![GitHub release](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/ver20170207.svg "download")](https://github.com/PBrus/Sigma-clipping/blob/master/good_points) ![Written in Bash](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/Bash.svg "language") ![Written in AWK](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/Awk.svg "language")
+# Sigma-clipping [![GitHub release](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/ver20170223.svg "download")](https://github.com/PBrus/Sigma-clipping/blob/master/good_points) ![Written in Bash](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/Bash.svg "language") ![Written in AWK](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/Awk.svg "language")
 
-Perform sigma-clipping on the data from a text file. This is a useful Linux tool.
+Script performs a sigma-clipping on the data from a text file. This is a useful Linux tool.
 
 ## Installation
 

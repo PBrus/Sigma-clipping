@@ -8,7 +8,7 @@ echo " +----------------------------------------------------+"
 echo " |   This program generates a file with 'good' data   |"
 echo " |       based on values from specified column        |"
 echo " |                                                    |"
-echo " |  * Version 2017-02-07                              |"
+echo " |  * Version 2017-02-23                              |"
 echo " |  * Licensed under the MIT license:                 |"
 echo " |    http://opensource.org/licenses/MIT              |"
 echo " |  * Copyright (c) 2017 Przemysław Bruś              |"
@@ -47,133 +47,133 @@ i=1
 tmp=${fname}_${i}.${text}
 while [ -e ${tmp} ]
 do
-	i=$((i+1))
-	tmp=${fname}_${i}.${text}
+    i=$((i+1))
+    tmp=${fname}_${i}.${text}
 done
 
 if [ $# -le 5 ]
 then
-	C=1
-	A=2.5
-	N=4
-	M=30
+    C=1
+    A=2.5
+    N=4
+    M=30
 else
-	clear
-	echo ""
-	echo "	Too many arguments!"
-	echo ""
-	exit
+    clear
+    echo ""
+    echo "  Too many arguments!"
+    echo ""
+    exit
 fi
 
 if [ $# -eq 5 ]
 then
-	C=$2
-	A=$3
-	N=$4
-	M=$5
+    C=$2
+    A=$3
+    N=$4
+    M=$5
 elif [ $# -eq 4 ]
 then
-	C=$2
-	A=$3
-	N=$4
+    C=$2
+    A=$3
+    N=$4
 elif [ $# -eq 3 ]
 then
-	C=$2
-	A=$3
+    C=$2
+    A=$3
 elif [ $# -eq 2 ]
 then
-	C=$2
+    C=$2
 fi
 
 # c4 depends on M value
 array=(
-	0.79788 0.88623 0.92132
-	0.93999 0.95153 0.95937
-	0.96503 0.96931 0.97266
-	0.97535 0.97756 0.97941
-	0.98097 0.98232 0.98348
-	0.98451 0.98541 0.98621
-	0.98693 0.98758 0.98817
-	0.9887  0.98919 0.98964
-	0.99005 0.99043 0.99079
-	0.99111 0.99142 0.9917
+    0.79788 0.88623 0.92132
+    0.93999 0.95153 0.95937
+    0.96503 0.96931 0.97266
+    0.97535 0.97756 0.97941
+    0.98097 0.98232 0.98348
+    0.98451 0.98541 0.98621
+    0.98693 0.98758 0.98817
+    0.9887  0.98919 0.98964
+    0.99005 0.99043 0.99079
+    0.99111 0.99142 0.9917
 )
 
 coeff_c4()
 {
-	idx=`wc -l ${fname}.${text} | awk '{printf("%d", $1-2)}'`
-	c4=1
+    idx=`wc -l ${fname}.${text} | awk '{printf("%d", $1-2)}'`
+    c4=1
 
-	if [ $idx -ge 0 ] && [ $idx -lt ${#array[@]} ]
-	then
-		c4=${array[$idx]}
-	fi
+    if [ $idx -ge 0 ] && [ $idx -lt ${#array[@]} ]
+    then
+        c4=${array[$idx]}
+    fi
 }
 
 coeff_c4_it()
-{       
-	idx=`wc -l ${fname}.${text}.it-${j} | awk '{printf("%d", $1-2)}'`
-	c4=1
+{
+    idx=`wc -l ${fname}.${text}.it-${j} | awk '{printf("%d", $1-2)}'`
+    c4=1
 
-	if [ $idx -ge 0 ] && [ $idx -lt ${#array[@]} ]
-	then
-		 c4=${array[$idx]}
-	fi
+    if [ $idx -ge 0 ] && [ $idx -lt ${#array[@]} ]
+    then
+         c4=${array[$idx]}
+    fi
 }
 
 state=1
 
 
-	for (( i=1; i<=$N; i++ ))
-	do
-		j=$((i-1))
-		if [ $i -eq 1 ]
-		then
-			coeff_c4
-			x=`awk -v col=$C '{sum += $col} END {print sum/NR}' ${fname}.${text}`
-			d=`awk -v col=$C -v ave=$x -v c4=$c4 '{sum += ($col - ave)*($col - ave)} END {print sqrt(sum/(NR-1))/c4}' ${fname}.${text}`
-			awk -v col=$C -v ave=$x -v a=$A -v sig=$d '{if (($col > ave-a*sig) && ($col < ave+a*sig)) print $0}' ${fname}.${text} > ${tmp}
-			oldline=`wc -l ${fname}.${text} | awk '{print $1}'`
-		else
-			coeff_c4_it
-			x=`awk -v col=$C '{sum += $col} END {print sum/NR}' ${fname}.${text}.it-${j}`
-			d=`awk -v col=$C -v ave=$x -v c4=$c4 '{sum += ($col - ave)*($col - ave)} END {print sqrt(sum/(NR-1))/c4}' ${fname}.${text}.it-${j}`
-			awk -v col=$C -v ave=$x -v a=$A -v sig=$d '{if (($col > ave-a*sig) && ($col < ave+a*sig)) print $0}' ${fname}.${text}.it-${j} > ${tmp}
-			oldline=`wc -l ${fname}.${text}.it-${j} | awk '{print $1}'`
-		fi
-	
-		howmany=`wc -l ${tmp} | awk '{print $1}'`
-	
-		if [ $howmany -lt $M ]
-		then
-			echo "	Too little data. Goodbye"
-			rm ${tmp}
-			i=$j
-			break
-		elif [ $state -eq 1 ]
-		then
-			state=0
-			echo ""
-	 		echo "   iteration   average   stand.deviation   rejected"
-			echo ""
-		fi
+    for (( i=1; i<=$N; i++ ))
+    do
+        j=$((i-1))
+        if [ $i -eq 1 ]
+        then
+            coeff_c4
+            x=`awk -v col=$C '{sum += $col} END {print sum/NR}' ${fname}.${text}`
+            d=`awk -v col=$C -v ave=$x -v c4=$c4 '{sum += ($col - ave)*($col - ave)} END {print sqrt(sum/(NR-1))/c4}' ${fname}.${text}`
+            awk -v col=$C -v ave=$x -v a=$A -v sig=$d '{if (($col > ave-a*sig) && ($col < ave+a*sig)) print $0}' ${fname}.${text} > ${tmp}
+            oldline=`wc -l ${fname}.${text} | awk '{print $1}'`
+        else
+            coeff_c4_it
+            x=`awk -v col=$C '{sum += $col} END {print sum/NR}' ${fname}.${text}.it-${j}`
+            d=`awk -v col=$C -v ave=$x -v c4=$c4 '{sum += ($col - ave)*($col - ave)} END {print sqrt(sum/(NR-1))/c4}' ${fname}.${text}.it-${j}`
+            awk -v col=$C -v ave=$x -v a=$A -v sig=$d '{if (($col > ave-a*sig) && ($col < ave+a*sig)) print $0}' ${fname}.${text}.it-${j} > ${tmp}
+            oldline=`wc -l ${fname}.${text}.it-${j} | awk '{print $1}'`
+        fi
 
-		newline=`wc -l ${tmp} | awk '{print $1}'`
-		mv ${tmp} ${fname}.${text}.it-${i}
-		reject=$((oldline - newline))
-		awk -v i=$i -v x=$x -v d=$d -v re=$reject 'BEGIN {printf("%8d %13lf %13lf %12d\n", i, x, d, re)}'
-	done
+        howmany=`wc -l ${tmp} | awk '{print $1}'`
+
+        if [ $howmany -lt $M ]
+        then
+            echo "  Too little data. Goodbye"
+            rm ${tmp}
+            i=$j
+            break
+        elif [ $state -eq 1 ]
+        then
+            state=0
+            echo ""
+            echo "   iteration   average   stand.deviation   rejected"
+            echo ""
+        fi
+
+        newline=`wc -l ${tmp} | awk '{print $1}'`
+        mv ${tmp} ${fname}.${text}.it-${i}
+        reject=$((oldline - newline))
+        awk -v i=$i -v x=$x -v d=$d -v re=$reject 'BEGIN {printf("%8d %13lf %13lf %12d\n", i, x, d, re)}'
+    done
 
 
 if [ $howmany -ge $M ]
-then 
-	j=$((j + 1))
+then
+    j=$((j + 1))
 fi
 
 if [ -e ${fname}.${text}.it-${j} ]
 then
-	cp ${fname}.${text}.it-${j} ${fname}.good
+    cp ${fname}.${text}.it-${j} ${fname}.good
 else
-	cp ${fname}.${text} ${fname}.good
+    cp ${fname}.${text} ${fname}.good
 fi
 rm -f *.it-* ${fname}.${text}
