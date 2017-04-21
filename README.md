@@ -1,4 +1,4 @@
-# Sigma-clipping [![GitHub release](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/ver20170223.svg "download")](https://github.com/PBrus/Sigma-clipping/blob/master/good_points) ![Written in Bash](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/Bash.svg "language") ![Written in AWK](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/Awk.svg "language")
+# Sigma-clipping [![GitHub release](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/ver20170223.svg "download")](https://github.com/pbrus/sigma-clipping/blob/master/good_points) ![Written in Bash](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/bash.svg "language") ![Written in AWK](http://www.astro.uni.wroc.pl/ludzie/brus/img/github/awk.svg "language")
 
 Script performs a sigma-clipping on the data from a text file. This is a useful Linux tool.
 
@@ -22,7 +22,7 @@ $ good_points data.lst 7 1.8 10 80
 ```
 After all the script generates an additional file with results in the working directory. Moreover some statistical information are printed on the screen.
 
-I encourage to visit my website to see more detailed description of this program. The current link can be found on my [GitHub profile](https://github.com/PBrus).
+I encourage to visit my website to see more detailed description of this program. The current link can be found on my [GitHub profile](https://github.com/pbrus).
 
 ## License
 
